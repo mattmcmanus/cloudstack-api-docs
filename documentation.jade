@@ -1,0 +1,122 @@
+doctype 5
+html
+  head
+    meta(name='viewport', content='width=device-width', charset='utf-8')
+
+    title Cloud Stack API
+
+    // Foundation CSS
+    link(rel="stylesheet", href="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.3.1/css/foundation.min.css")
+
+    script(srr="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.3.1/js/vendor/custom.modernizr.js")
+
+    style.
+      #method-list li { display:none }
+      #method-list a { display:block; padding:4px 7px }
+      table { width: 100% }
+      .method { display: none }
+      .subheading { l
+        line-height: 1.4;
+        color: #6f6f6f;
+        font-weight: 300;
+        margin-top: 0.2em;
+        margin-bottom: 0.5em;
+      }
+
+  body
+    .sticky.contain-to-grid
+      nav.top-bar
+        ul.title-area
+          li.name
+            h1
+              a(hred="#") Cloud Stack API
+
+    .container
+      .row
+        .large-12.columns
+          .row.collapse
+            .large-2.columns
+              span.prefix Method:
+            .large-10.columns
+              input#method-filter(type="text")
+      .row
+        .large-12.columns
+          .panel#method-list
+            h7.text-muted Methods
+            ul.inline-list
+              each method in api
+                li
+                  a(href='#'+method.name)= method.name
+      .row
+        .large-12.columns
+          each method in api
+            .method(id=method.name)
+              .row
+                .large-12.columns
+                  h3.method-name
+                    =method.name
+                    if method.isasync
+                      span.label.secondary  (async)
+                  h5.subheading= method.description
+              .row
+                .large-12.columns
+                  h5 Parameters
+                  table
+                    thead
+                      tr
+                        th Name
+                        th Required
+                        th Description
+                        th Type
+                    tbody
+                      each param in method.params
+                        tr
+                          td
+                            h5= param.name
+                          td
+                            if param.required
+                              span.label Required
+                          td= param.description
+                          td= param.type
+
+                  h5 Response
+                  table
+                    thead
+                      tr
+                        th Name
+                        th Description
+                        th Type
+                    tbody
+                      each param in method.response
+                        tr
+                          td
+                            h5= param.name
+                          td= param.description
+                          td= param.type
+
+    script(src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js')
+    script(src='http://cdnjs.cloudflare.com/ajax/libs/foundation/4.3.1/js/foundation.min.js')
+    script(src='http://cdnjs.cloudflare.com/ajax/libs/foundation/4.3.1/js/foundation/foundation.reveal.min.js')
+
+    script.
+      jQuery.expr[':'].Contains = function(a,i,m){
+          return (a.textContent || a.innerText || "").toUpperCase().indexOf(m[3].toUpperCase())>=0;
+      };
+
+      $('.panel').hide();
+
+      $('#method-filter').change( function () {
+        var filter = $(this).val();
+        console.log(filter)
+        if (filter) {
+          var methods = $("#method-list a:Contains(" + filter + ")");
+          if (methods.length) { $('.panel').show() }
+          methods.parent().show();
+          $("#method-list a:not(:Contains(" + filter + "))").parent().hide();
+
+          $("h3.method-name:Contains(" + filter + ")").parents('.method').show();
+          $("h3.method-name:not(:Contains(" + filter + "))").parents('.method').hide();
+        } else {
+          $(".method").hide();
+        }
+      });
