@@ -8,4 +8,4 @@ data = JSON.parse(data)
 // renderFile
 var html = jade.renderFile('documentation.jade', data)
 
-fs.writeFileSync("api.html", html)
+fs.writeFileSync("index.html", html)
