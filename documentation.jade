@@ -12,7 +12,7 @@ html
 
     style.
       #method-list { overflow: hidden }
-      #method-list li { display:none; margin-left:0 }
+      #method-list li { display:none; margin-left:0; list-style:none }
       #method-list a { display:block; padding:4px 7px }
       table { width: 100% }
       .method { display: none; margin:0 0 3em 0 }
@@ -39,11 +39,10 @@ html
              h6.muted Filter methods
              input#method-filter(type="text", placeholder="ex: \"ssh\"")
           .row#method-list
-            .large-12.columns
-              ul.inline-list
-                each method in api
-                  li
-                    a(href='#'+method.name)= method.name
+            ul
+              each method in api
+                li
+                  a(href='#'+method.name)= method.name
         .large-9.columns
           h2#help <-- Start typing to filter results
           each method in api
