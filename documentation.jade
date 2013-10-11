@@ -11,10 +11,11 @@ html
     script(srr="http://cdnjs.cloudflare.com/ajax/libs/foundation/4.3.1/js/vendor/custom.modernizr.js")
 
     style.
-      #method-list li { display:none }
+      #method-list { overflow: hidden }
+      #method-list li { display:none; margin-left:0 }
       #method-list a { display:block; padding:4px 7px }
       table { width: 100% }
-      .method { display: none }
+      .method { display: none; margin:0 0 3em 0 }
       .subheading { l
         line-height: 1.4;
         color: #6f6f6f;
@@ -29,26 +30,22 @@ html
         ul.title-area
           li.name
             h1
-              a(hred="#") Cloud Stack API
+              a(hred="#") Cloud Stack API Documentation
 
     .container
       .row
-        .large-12.columns
-          .row.collapse
-            .large-2.columns
-              span.prefix Method:
-            .large-10.columns
-              input#method-filter(type="text")
-      .row
-        .large-12.columns
-          .panel#method-list
-            h7.text-muted Methods
-            ul.inline-list
-              each method in api
-                li
-                  a(href='#'+method.name)= method.name
-      .row
-        .large-12.columns
+        .large-3.columns
+          .row
+             h6.muted Filter methods
+             input#method-filter(type="text", placeholder="ex: \"ssh\"")
+          .row#method-list
+            .large-12.columns
+              ul.inline-list
+                each method in api
+                  li
+                    a(href='#'+method.name)= method.name
+        .large-9.columns
+          h2#help <-- Start typing to filter results
           each method in api
             .method(id=method.name)
               .row
@@ -105,10 +102,11 @@ html
 
       $('.panel').hide();
 
-      $('#method-filter').change( function () {
+      $('#method-filter').keyup( function () {
         var filter = $(this).val();
         console.log(filter)
-        if (filter) {
+        if (filter && filter.length > 2) {
+          $('#help').hide();
           var methods = $("#method-list a:Contains(" + filter + ")");
           if (methods.length) { $('.panel').show() }
           methods.parent().show();
